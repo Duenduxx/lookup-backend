@@ -10,7 +10,8 @@ const client = new Client({
     ]
 });
 
-client.on("ready", () => {
+client.on("clientReady", () => {
+
     console.log(`Bot connecté en tant que ${client.user.tag}`);
 });
 
