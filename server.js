@@ -1,16 +1,14 @@
+require("./bot.js"); // ← LANCE TON BOT AUTOMATIQUEMENT
+
 const express = require("express");
 const cors = require("cors");
 const session = require("express-session");
 const passport = require("passport");
 const DiscordStrategy = require("passport-discord").Strategy;
-const path = require("path");
 
-const CLIENT_ID = "1519078404408737944"; // ton client ID Discord
-const CLIENT_SECRET = process.env.CLIENT_SECRET; 
+const CLIENT_ID = "1519078404408737944";
+const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const CALLBACK_URL = "https://lookup-backend-paux.onrender.com/auth/callback";
-
-
-// 👉 TON NOUVEAU SERVER ID
 const REQUIRED_GUILD = "1519446526093688983";
 
 const app = express();
@@ -41,23 +39,19 @@ passport.use(new DiscordStrategy({
     return done(null, profile);
 }));
 
-// 🔐 Redirection vers Discord
 app.get("/auth/discord", passport.authenticate("discord"));
 
-// 🔐 Callback après login Discord
 app.get("/auth/callback", passport.authenticate("discord", {
     failureRedirect: "/"
 }), (req, res) => {
     res.redirect("https://lookup-by-pyro-xlm.web.app");
 });
 
-// 🔐 Vérification utilisateur + vérification serveur Discord
 app.get("/me", (req, res) => {
     if (!req.user) {
         return res.json({ authenticated: false });
     }
 
-    // Vérifie si l'utilisateur est dans TON serveur Discord
     const inGuild = req.user.guilds?.some(g => g.id === REQUIRED_GUILD);
 
     if (!inGuild) {
@@ -67,7 +61,6 @@ app.get("/me", (req, res) => {
         });
     }
 
-    // Si OK → accès autorisé
     res.json({
         authenticated: true,
         username: req.user.username,
