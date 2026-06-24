@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: lookup-backend
+    env: node
+    region: frankfurt
+    plan: free
+    buildCommand: "npm install"
+    startCommand: "node server.js"
+    envVars:
+      - key: CLIENT_SECRET
+        sync: false
+      - key: BOT_TOKEN
+        sync: false
