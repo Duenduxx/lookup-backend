@@ -1,6 +1,8 @@
 const { Client, GatewayIntentBits } = require("discord.js");
 const TOKEN = process.env.BOT_TOKEN;
 
+console.log("BOT_TOKEN =", TOKEN ? "OK" : "UNDEFINED");
+
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
@@ -8,9 +10,10 @@ const client = new Client({
     ]
 });
 
-client.on("clientReady", () => {
+client.on("ready", () => {
     console.log(`Bot connecté en tant que ${client.user.tag}`);
 });
-console.log("TOKEN =", TOKEN ? "OK" : "UNDEFINED");
 
-client.login(TOKEN);
+client.login(TOKEN).catch(err => {
+    console.error("Erreur de connexion Discord :", err);
+});
