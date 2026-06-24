@@ -11,5 +11,6 @@ const client = new Client({
 client.on("clientReady", () => {
     console.log(`Bot connecté en tant que ${client.user.tag}`);
 });
+console.log("TOKEN =", TOKEN ? "OK" : "UNDEFINED");
 
 client.login(TOKEN);
